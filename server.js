@@ -10,7 +10,7 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -39,7 +39,7 @@ const users = [
 
 const resetTokens = {};
 
-// الصفحة الرئيسية
+
 app.get('/', (req, res) => {
   if (req.session.user) {
     return res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// صفحة تسجيل الدخول
+
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
@@ -65,7 +65,7 @@ app.post('/login', (req, res) => {
   res.status(401).send('Invalid username or password');
 });
 
-// صفحة Dashboard
+
 app.get('/dashboard', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/login');
@@ -73,7 +73,7 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
-// API لمعلومات المستخدم
+
 app.get('/api/user-info', (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -84,7 +84,7 @@ app.get('/api/user-info', (req, res) => {
   });
 });
 
-// نسيان كلمة المرور
+
 app.get('/forgot-password', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'forgot-password.html'));
 });
@@ -98,12 +98,12 @@ app.post('/forgot-password', async (req, res) => {
     return res.status(404).send('User not found');
   }
 
-  const resetToken = crypto.randomBytes(16).toString('hex'); // رمز عشوائي مشابه للمثال
+  const resetToken = crypto.randomBytes(16).toString('hex'); 
   resetTokens[resetToken] = username; // ربط الرمز بالمستخدم
   console.log('Generated reset token:', resetToken);
   console.log('Current resetTokens:', resetTokens);
 
-  // رابط على شكل المثال المطلوب
+ 
   const resetLink = `http://localhost:${PORT}/reset-password?temp-forgot-password-token=${resetToken}`;
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -128,9 +128,9 @@ app.post('/forgot-password', async (req, res) => {
   }
 });
 
-// صفحة إعادة تعيين كلمة المرور
+
 app.get('/reset-password', (req, res) => {
-  const { 'temp-forgot-password-token': token } = req.query; // استقبال الرمز من المعامل
+  const { 'temp-forgot-password-token': token } = req.query; 
   res.sendFile(path.join(__dirname, 'public', 'reset-password.html'));
 });
 
@@ -138,7 +138,7 @@ app.post('/reset-password', (req, res) => {
   const { token, username, new_password } = req.body;
   console.log('Password reset attempt:', { token, username, new_password });
 
-  // التحقق من وجود الرمز فقط (ثغرة Password Reset Broken Logic)
+ 
   if (!resetTokens[token]) {
     return res.status(400).send('Invalid or expired token');
   }
@@ -160,13 +160,13 @@ app.post('/reset-password', (req, res) => {
   `);
 });
 
-// تسجيل الخروج
+
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/login');
 });
 
-// API لقائمة المستخدمين
+
 app.get('/api/users', (req, res) => {
   const safeUsers = users.map(user => ({
     id: user.id,
@@ -176,7 +176,7 @@ app.get('/api/users', (req, res) => {
   res.json(safeUsers);
 });
 
-// تشغيل الخادم
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log('Available users:');
