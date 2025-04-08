@@ -1,0 +1,29 @@
+{
+    "name": "password-reset-vulnerable-app",
+    "version": "1.0.0",
+    "description": "A vulnerable password reset application for security education",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "exploit": "node exploit.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "security",
+        "vulnerability",
+        "authentication",
+        "password-reset"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.6.2",
+        "cookie-parser": "^1.4.6",
+        "dotenv": "^16.3.1",
+        "express": "^4.21.2",
+        "express-rate-limit": "^7.1.4",
+        "express-session": "^1.17.3",
+        "nodemailer": "^6.10.0",
+        "nodemon": "^3.1.9"
+    }
+}
